@@ -10,4 +10,9 @@ public class GameStateManager
     {
         return _gameStates.GetOrAdd(gameId, id => new GameState());
     }
+
+    public void RemoveGameState(Guid gameId)
+    {
+        _gameStates.TryRemove(gameId, out _);
+    }
 }

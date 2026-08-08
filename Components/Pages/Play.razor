@@ -118,6 +118,11 @@
     {
         LocalPlayer?.IsOnline = false;
         GameState.OnGameStateChanged -= HandleGameStateChanged;
+
+        if (GameState.PlayerCount == 0)
+        {
+            GameStateManager.RemoveGameState(GameId);
+        }
     }
 
     private void HandleGameStateChanged()

@@ -3,3 +3,5 @@ services:
     build: .
     restart: unless-stopped
     container_name: SimplePoker
+    volumes:
+      - ./antiforgery-keys:/app/antiforgery-keys

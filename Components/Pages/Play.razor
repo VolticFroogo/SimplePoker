@@ -1,10 +1,6 @@
 ﻿@page "/p/{GameId:guid}"
 @rendermode InteractiveServer
 @implements IDisposable
-@using SimplePoker.Enums
-@using SimplePoker.Models
-@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
-@using QRCoder
 
 @inject GameStateManager GameStateManager
 @inject ProtectedLocalStorage ProtectedLocalStore

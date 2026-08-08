@@ -1,0 +1,110 @@
+﻿@page "/p/{GameId:guid}"
+@rendermode InteractiveServer
+@implements IDisposable
+@using SimplePoker.Enums
+@using SimplePoker.Models
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+
+@inject GameStateManager GameStateManager
+@inject ProtectedLocalStorage ProtectedLocalStore
+
+@if (GameState is not null && LocalPlayer is not null)
+{
+    @if (!LocalPlayer.IsHost)
+    {
+        <div class="player-view">
+            <div class="title-bar">
+                <span class="game-id">Game @GameId</span>
+                <span class="player-id">Player @LocalPlayer.Id</span>
+            </div>
+            <div class="cards player-cards">
+                <span class="card"><img class="card-img" src="images/cards/@(GameState.GetCardsForPlayer(LocalPlayer)[0]).svg" /></span>
+                <span class="card"><img class="card-img" src="images/cards/@(GameState.GetCardsForPlayer(LocalPlayer)[1]).svg" /></span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="host-view">
+            <div class="title-bar">
+                <span class="game-id">Game @GameId</span>
+                <span class="player-count">Players: @GameState.PlayerCount</span>
+            </div>
+
+            <div class="cards community-cards">
+                @for (var i = 0; i < 5; i++)
+                {
+                    var dealt = (i < 3 && GameState.HandState >= HandState.Flop)
+                        || (i == 3 && GameState.HandState >= HandState.Turn)
+                        || (i == 4 && GameState.HandState >= HandState.River);
+
+                    if (dealt)
+                    {
+                        <span class="card"><img class="card-img" src="images/cards/@(GameState.GetCommunityCards()[i]).svg" /></span>
+                    }
+                    else
+                    {
+                        <div class="card card-placeholder"></div>
+                    }
+                }
+            </div>
+
+            <div class="action-bar">
+                @if (GameState.HandState != HandState.River)
+                {
+                    <button class="btn-action" @onclick="GameState.AdvanceHandState">Advance hand state</button>
+                }
+
+                <button class="btn-action" @onclick="GameState.RedealGame">Next hand</button>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public Guid GameId { get; set; }
+
+    private GameState? GameState => GameStateManager.GetOrCreateGameState(GameId);
+
+    private Player? LocalPlayer;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        var localPlayerId = await GetOrCreateLocalPlayerId();
+
+        LocalPlayer = GameState.AddOrFindPlayer(localPlayerId);
+        LocalPlayer.IsOnline = true;
+        GameState.OnGameStateChanged += HandleGameStateChanged;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        LocalPlayer?.IsOnline = false;
+        GameState.OnGameStateChanged -= HandleGameStateChanged;
+    }
+
+    private void HandleGameStateChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task<Guid> GetOrCreateLocalPlayerId()
+    {
+        var localPlayerIdResult = await ProtectedLocalStore.GetAsync<Guid>("LocalPlayerId");
+        if (localPlayerIdResult.Success && localPlayerIdResult.Value != Guid.Empty)
+        {
+            return localPlayerIdResult.Value;
+        }
+
+        var newPlayerId = Guid.NewGuid();
+        await ProtectedLocalStore.SetAsync("LocalPlayerId", newPlayerId);
+        return newPlayerId;
+    }
+}

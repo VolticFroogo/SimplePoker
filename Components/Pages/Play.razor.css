@@ -1,0 +1,181 @@
+::deep {
+    box-sizing: border-box;
+}
+
+.host-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100dvh;
+    width: 100%;
+    background: #0b3d20;
+    color: #f5f5f5;
+    overflow: hidden;
+}
+
+.player-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100dvh;
+    width: 100%;
+    background: #0b3d20;
+    color: #f5f5f5;
+    padding: 1rem 0;
+    gap: 1.5rem;
+    overflow-x: hidden;
+}
+
+.title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background: rgba(0, 0, 0, 0.25);
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+}
+
+.player-view .title-bar {
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
+    background: none;
+    padding: 0.5rem 1rem;
+}
+
+.cards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+    gap: 1rem;
+}
+
+.card {
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-img {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 101%;
+    height: 101%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    box-sizing: border-box;
+}
+
+.host-view .cards {
+    min-height: 0;
+    flex-wrap: nowrap;
+}
+
+.host-view .card {
+    aspect-ratio: 167.0869141 / 242.6669922;
+    height: auto;
+    width: 16%;
+    max-height: 70vh;
+    max-width: calc(70vh * (167.0869141 / 242.6669922));
+}
+
+.host-view span.card {
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+    border-radius: 0.8vw;
+    border: 0.35vw solid #ffffff;
+}
+
+.host-view .card-img {
+    object-fit: cover;
+}
+
+.card-placeholder {
+    border: 2px dashed rgba(245, 245, 245, 0.25);
+    border-radius: 0.5rem;
+    background: rgba(0, 0, 0, 0.15);
+    box-shadow: none;
+}
+
+.player-cards {
+    flex: none;
+    padding: 1rem 0;
+}
+
+.player-cards .card {
+    width: 40vw;
+    max-width: 180px;
+    height: auto;
+    aspect-ratio: 167.0869141 / 242.6669922;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+    border-radius: 3vh;
+    border: 3px solid #ffffff;
+}
+
+/* Portrait: cards blown up huge, laid across the screen so only their
+   top-left corner peeks into view, filling the phone's verticality */
+@media (orientation: portrait) {
+    .player-cards {
+        position: relative;
+        flex: 1;
+        width: 100%;
+        gap: 0;
+        padding: 0;
+    }
+
+    .player-cards .card {
+        position: absolute;
+        width: auto;
+        height: 80vh;
+        max-width: none;
+        top: 5vh;
+    }
+
+    .player-cards .card:first-child {
+        left: 5vw;
+        transform: rotate(-2deg);
+        z-index: 1;
+    }
+
+    .player-cards .card:last-child {
+        top: 20vh;
+        left: 20vw;
+        transform: rotate(6deg);
+        z-index: 2;
+    }
+}
+
+.action-bar {
+    display: flex;
+    gap: 5rem;
+    justify-content: center;
+    padding: 1rem 1.5rem 1.5rem;
+    width: 100%;
+}
+
+.btn-action {
+    border: none;
+    border-radius: 999px;
+    padding: 1rem 3rem;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0b3d20;
+    background: #f5c542;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    transition: transform 0.1s ease, background 0.2s ease;
+}
+
+.btn-action:hover {
+    background: #ffd75e;
+}
+
+.btn-action:active {
+    transform: scale(0.97);
+}

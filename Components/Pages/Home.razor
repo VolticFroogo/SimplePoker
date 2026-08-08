@@ -4,7 +4,10 @@
 
 <PageTitle>Home</PageTitle>
 
-<button onclick="@StartGame">Start game</button>
+<div class="home-view">
+    <h1 class="title">SimplePoker</h1>
+    <button class="btn-action" @onclick="StartGame">Start game</button>
+</div>
 
 @code {
     private void StartGame()

@@ -1,5 +1,5 @@
 ﻿@page "/p/{GameId:guid}"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @implements IDisposable
 
 @inject GameStateManager GameStateManager
@@ -116,7 +116,11 @@
 
     public void Dispose()
     {
-        LocalPlayer?.IsOnline = false;
+        if (LocalPlayer is not null)
+        {
+            LocalPlayer.IsOnline = false;
+        }
+
         GameState.OnGameStateChanged -= HandleGameStateChanged;
 
         if (GameState.PlayerCount == 0)

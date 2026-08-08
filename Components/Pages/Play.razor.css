@@ -204,3 +204,11 @@
 .btn-action:active {
     transform: scale(0.97);
 }
+
+.btn-action:disabled {
+    background: #8a8a8a;
+    color: #d0d0d0;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}

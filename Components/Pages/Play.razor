@@ -60,10 +60,7 @@
             <div class="action-bar">
                 <button class="btn-action" @onclick="ToggleQrCode">@(ShowQrCode ? "Hide QR code" : "Show QR code")</button>
 
-                @if (GameState.HandState != HandState.River)
-                {
-                    <button class="btn-action" @onclick="GameState.AdvanceHandState">Advance hand state</button>
-                }
+                <button class="btn-action" disabled="@(GameState.HandState == HandState.River)" @onclick="GameState.AdvanceHandState">@AdvanceButtonText</button>
 
                 <button class="btn-action" @onclick="GameState.RedealGame">Next hand</button>
             </div>
@@ -79,7 +76,15 @@
 
     private Player? LocalPlayer;
 
-    private bool ShowQrCode;
+    private bool ShowQrCode = true;
+
+    private string AdvanceButtonText => GameState?.HandState switch
+    {
+        HandState.Preflop => "Deal flop",
+        HandState.Flop => "Deal turn",
+        HandState.Turn => "Deal river",
+        _ => "Deal river",
+    };
 
     private string JoinQrCodeDataUri => GenerateQrCodeDataUri(NavigationManager.Uri);
 

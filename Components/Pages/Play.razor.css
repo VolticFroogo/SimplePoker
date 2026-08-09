@@ -90,6 +90,7 @@
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
     border-radius: 0.8vw;
     border: 0.35vw solid #ffffff;
+    background: #ffffff;
 }
 
 .host-view .card-img {

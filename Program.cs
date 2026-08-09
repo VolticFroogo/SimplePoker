@@ -22,7 +22,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
-app.UseAntiforgery();
 
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -35,6 +34,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseRouting();
+app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()

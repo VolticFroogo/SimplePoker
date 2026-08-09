@@ -34,6 +34,8 @@ app.UseStaticFiles(new StaticFileOptions
     }
 });
 
+app.UseRouting();
+
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

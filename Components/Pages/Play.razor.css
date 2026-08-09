@@ -198,6 +198,14 @@
     transition: transform 0.1s ease, background 0.2s ease;
 }
 
+.action-bar .btn-action:nth-child(1) {
+    min-width: 17ch;
+}
+
+.action-bar .btn-action:nth-child(2) {
+    min-width: 13ch;
+}
+
 .btn-action:hover {
     background: #ffd75e;
 }
